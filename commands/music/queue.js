@@ -32,12 +32,14 @@ module.exports = {
         text: message.author.tag
       });
 
-    queue.songs.map((song, index) => {
-      const list = `${index === 0 ? "Playing: " : index}**${song.name}** - \`${
-        song.formattedDuration
-      }\` | Requested By: ${song.member}`;
-      embed.setDescription(list);
-    });
+    const list = queue.songs
+      .map((song, index) => {
+        return `${index === 0 ? "Playing: " : `${index}: `}**${song.name}** - \`${
+          song.formattedDuration
+        }\` | Requested By: ${song.member}`;
+      })
+      .join("\n");
+    embed.setDescription(list);
 
     await message.channel.send({
       embeds: [embed]
