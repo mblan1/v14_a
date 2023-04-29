@@ -1,9 +1,9 @@
-const { Events, EmbedBuilder } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 const client = require("..");
 const { formatString } = require("../utils/formatString");
 const { randomHexColor } = require("../utils/randomHexColor");
 
-client.on(Events.InteractionCreate, async (interaction) => {
+client.on("interactionCreate", async (interaction) => {
   if (!interaction.isStringSelectMenu()) return;
 
   const selected = interaction.values[0];

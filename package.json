@@ -9,6 +9,7 @@
     "dotenv": "^16.0.3",
     "ffmpeg-static": "^4.4.1",
     "libsodium-wrappers": "^0.7.10",
+    "openai": "^3.2.1",
     "ytdl-core": "^4.11.2"
   },
   "name": "v14_active",
