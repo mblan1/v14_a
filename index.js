@@ -17,6 +17,9 @@ const client = new Client({
         GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildPresences,
         GatewayIntentBits.GuildEmojisAndStickers,
+        GatewayIntentBits.GuildModeration,
+        GatewayIntentBits.GuildInvites,
+        GatewayIntentBits.GuildScheduledEvents,
         GatewayIntentBits.AutoModerationConfiguration,
         GatewayIntentBits.AutoModerationExecution,
         GatewayIntentBits.DirectMessageReactions,
@@ -31,6 +34,7 @@ const client = new Client({
         Partials.User,
         Partials.Reaction,
         Partials.ThreadMember,
+        Partials.GuildScheduledEvent,
     ],
 });
 
@@ -38,7 +42,7 @@ module.exports = client;
 
 // collection
 client.commands = new Collection();
-client.slashCommands = new Collection();
+client.interactions = new Collection();
 
 // handlers
 const handlers = fs.readdirSync('./handlers');
