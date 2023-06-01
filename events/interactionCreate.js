@@ -1,11 +1,12 @@
-const { Events, EmbedBuilder } = require('discord.js');
+const { Events, EmbedBuilder, Collection } = require('discord.js');
 const client = require('..');
 const { formatString } = require('../utils/formatString');
 const { randomHexColor } = require('../utils/randomHexColor');
 
+const { cooldowns } = client;
+
 client.on(Events.InteractionCreate, async (interaction) => {
     if (!interaction.isChatInputCommand()) return;
-
     // handle slash command
     const command = interaction.client.interactions.get(interaction.commandName);
     if (!command) {
@@ -13,7 +14,34 @@ client.on(Events.InteractionCreate, async (interaction) => {
         return;
     }
 
+    // cool down
+    if (!cooldowns.has(command.data.name)) {
+        cooldowns.set(command.data.name, new Collection());
+    }
+
+    const now = Date.now();
+    const timeStamps = cooldowns.get(command.data.name);
+    const defaultTine = 3;
+    const cooldownAmount = (command.cooldown ?? defaultTine) * 1000;
+
+    if (timeStamps.has(command.data.name)) {
+        const expirationTime = timeStamps.get(interaction.user.id) + cooldownAmount;
+
+        if (now < expirationTime) {
+            const expirationTimestamp = Math.round(expirationTime / 1000);
+            return interaction.reply({
+                content: `Please wait, you are on a cooldown for \`${command.data.name}\`. You can use it again <t:${expiredTimestamp}:R>.`,
+                ephemeral: true,
+            });
+        }
+    }
+    timeStamps.set(interaction.user.id.now);
+    setTimeout(() => {
+        timeStamps.delete(interaction.user.id);
+    }, cooldownAmount);
+
     try {
+        // execute command
         await command.execute(interaction);
     } catch (error) {
         console.error(error);
