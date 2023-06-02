@@ -16,12 +16,10 @@ module.exports = {
         await interaction.reply('Searching song...!');
 
         try {
-            await distube
-                .play(interaction.member.voice.channel, input, {
-                    member: interaction.member,
-                    textChannel: interaction.channel,
-                })
-                .then(() => interaction.deleteReply());
+            await distube.play(interaction.member.voice.channel, input, {
+                member: interaction.member,
+                textChannel: interaction.channel,
+            });
         } catch (error) {
             await interaction.followUp('There was an error while playing the song.');
         }
