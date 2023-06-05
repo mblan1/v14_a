@@ -1,19 +1,20 @@
-const { DisTube } = require("distube");
+const { DisTube } = require('distube');
 
-const { YtDlpPlugin } = require("@distube/yt-dlp");
-const client = require("..");
+const { YtDlpPlugin } = require('@distube/yt-dlp');
+const client = require('..');
 
 const distube = new DisTube(client, {
-  leaveOnStop: true,
-  emitNewSongOnly: true,
-  emitAddSongWhenCreatingQueue: true,
-  emitAddListWhenCreatingQueue: true,
-  emptyCooldown: 2000,
-  plugins: [
-    new YtDlpPlugin({
-      update: true
-    })
-  ]
+    leaveOnStop: true,
+    emitNewSongOnly: true,
+    emitAddSongWhenCreatingQueue: true,
+    emitAddListWhenCreatingQueue: true,
+    emptyCooldown: 2000,
+    leaveOnEmpty: true,
+    plugins: [
+        new YtDlpPlugin({
+            update: true,
+        }),
+    ],
 });
 
 module.exports = distube;
