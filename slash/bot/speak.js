@@ -21,9 +21,9 @@ module.exports = {
             if (queue) return interaction.reply('Bot is playing music | to cancel playing `/stop`');
 
             // join voiceChannel
-            const voiceChannel = interaction.member.voice.channel;
             if (checkSameInteractionRoom(interaction)) return;
 
+            const voiceChannel = interaction.member.voice.channel;
             const connection = joinVoiceChannel({
                 channelId: voiceChannel.id,
                 guildId: voiceChannel.guild.id,
@@ -49,6 +49,7 @@ module.exports = {
             // });
 
             await interaction.reply('TTS started! ');
+            await interaction.deleteReply();
         } catch (error) {
             console.log(error);
             await interaction.reply('An error occurred while playing text-to-speech.');

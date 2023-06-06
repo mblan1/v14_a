@@ -1,8 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const distube = require('../client/distube');
-const client = require('..');
 const { randomHexColor } = require('../utils/randomHexColor');
-const { Events } = require('distube');
 
 const embed = new EmbedBuilder()
     .setAuthor({
@@ -28,6 +26,17 @@ distube
             ],
         });
     })
-    .on(Events.EMPTY, (queue) => {
+    .on('addList', (queue, playlist) => {
+        queue.textChannel?.send({
+            embeds: [
+                embed
+                    .setDescription(
+                        `Added Playlist: **${playlist.name}**\n\nLength: \`${playlist.songs.length}\`\n\nDuration: \`${playlist.formattedDuration}\``,
+                    )
+                    .setThumbnail(playlist.thumbnail),
+            ],
+        });
+    })
+    .on('empty', (queue) => {
         queue.textChannel?.send('❗ | All tracks have been played !');
     });

@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { SlashCommandBuilder } = require('discord.js');
 const { checkSameInteractionRoom } = require('../../utils/checkSameRoom');
 const distube = require('../../client/distube');
 
@@ -13,8 +13,8 @@ module.exports = {
     async execute(interaction) {
         const input = interaction.options.getString('song');
         if (checkSameInteractionRoom(interaction)) return;
-        await interaction.reply('Searching song...!');
 
+        await interaction.reply('Searching song...!');
         try {
             await distube.play(interaction.member.voice.channel, input, {
                 member: interaction.member,
