@@ -6,7 +6,9 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('volume')
         .setDescription('Set Volume')
-        .addNumberOption((option) => option.setName('value').setDescription('Volume value')),
+        .addNumberOption((option) =>
+            option.setName('value').setDescription('Volume value').setMaxValue(100).setMinValue(100),
+        ),
     category: 'music',
     cooldown: 3,
 

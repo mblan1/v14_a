@@ -8,7 +8,9 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('speak')
         .setDescription('Text to Speech')
-        .addStringOption((option) => option.setName('text').setDescription('Content').setRequired(true)),
+        .addStringOption((option) =>
+            option.setName('text').setDescription('Content').setRequired(true).setMaxLength(200),
+        ),
     cooldown: 5,
     category: 'bot',
 

@@ -11,8 +11,10 @@ const distube = new DisTube(client, {
     emitAddSongWhenCreatingQueue: false,
     emitAddListWhenCreatingQueue: false,
     plugins: [
-        new YtDlpPlugin(),
-        new SoundCloudPlugin(),
+        new YtDlpPlugin({
+            update: false,
+        }),
+        new SoundCloudPlugin({}),
         new SpotifyPlugin({
             emitEventsAfterFetching: true,
         }),
