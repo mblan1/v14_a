@@ -3,6 +3,9 @@ const client = require('..');
 
 const { prefix } = process.env;
 client.once(Events.ClientReady, async () => {
+    const guilds = client.guilds.cache;
+    guilds.forEach((g) => console.log(`Guild name: ${g.name}`));
+
     client.user.setPresence({
         activities: [
             {

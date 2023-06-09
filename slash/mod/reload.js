@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
+const { getSlashCommands } = require('../../utils/getSlashCommands');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -7,9 +8,14 @@ module.exports = {
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .setDMPermission(false)
         .addStringOption((option) =>
-            option.setName('command').setDescription('The command to reload').setRequired(true),
+            option
+                .setName('command')
+                .setDescription('The command to reload')
+                .setRequired(true)
+                .addChoices(...getSlashCommands()),
         ),
     category: 'mod',
+    cooldown: 5,
 
     async execute(interaction) {
         const commandName = interaction.options.getString('command', true).toLowerCase();
