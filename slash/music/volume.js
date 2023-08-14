@@ -7,7 +7,7 @@ module.exports = {
         .setName('volume')
         .setDescription('Set Volume')
         .addNumberOption((option) =>
-            option.setName('value').setDescription('Volume value').setMaxValue(100).setMinValue(100),
+            option.setName('value').setDescription('Volume value').setMaxValue(100).setMinValue(0),
         ),
     category: 'music',
     cooldown: 3,

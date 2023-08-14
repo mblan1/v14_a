@@ -11,7 +11,6 @@ module.exports = {
         if (checkSameInteractionRoom(interaction)) return;
         const queue = distube.getQueue(interaction);
         if (!queue) return interaction.reply('❗ | There is nothing in queue!');
-
         queue.stop();
         await interaction.reply('🛑 | Leaving....');
     },

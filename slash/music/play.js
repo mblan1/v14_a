@@ -13,12 +13,11 @@ module.exports = {
     async execute(interaction) {
         const input = interaction.options.getString('song');
         if (checkSameInteractionRoom(interaction)) return;
-        const voiceChannel = interaction.member.voice.channel;
 
         await interaction.reply('Searching song...!');
 
         try {
-            await distube.play(voiceChannel, input, {
+            await distube.play(interaction.member.voice.channel, input, {
                 member: interaction.member,
                 textChannel: interaction.channel,
             });
