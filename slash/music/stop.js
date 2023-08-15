@@ -12,6 +12,6 @@ module.exports = {
         const queue = distube.getQueue(interaction);
         if (!queue) return interaction.reply('❗ | There is nothing in queue!');
         queue.stop();
-        await interaction.reply('🛑 | Leaving....');
+        await interaction.reply('🛑 | Stopped!');
     },
 };

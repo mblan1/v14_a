@@ -1,6 +1,8 @@
 const { EmbedBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require('discord.js');
 const distube = require('../client/distube');
 const { randomHexColor } = require('../utils/randomHexColor');
+const { musicBtn1, musicBtn2 } = require('../utils/interactionButton');
+const client = require('..');
 
 const embed = new EmbedBuilder()
     .setAuthor({
@@ -11,41 +13,73 @@ const embed = new EmbedBuilder()
         text: 'Music Player By Snow',
     });
 
-const stop = new ButtonBuilder().setCustomId('stop').setStyle(ButtonStyle.Danger).setEmoji('⏹️');
-const next = new ButtonBuilder().setCustomId('nextSong').setEmoji('⏭️').setStyle(ButtonStyle.Secondary);
-const prev = new ButtonBuilder().setCustomId('prevSong').setEmoji('⏮️').setStyle(ButtonStyle.Secondary);
-const pauseOrResume = new ButtonBuilder().setCustomId('pauseOrResumeSong').setEmoji('⏯️').setStyle(ButtonStyle.Primary);
-const asdVolume = new ButtonBuilder()
-    .setCustomId('asdVolume')
-    .setEmoji('🔊')
-    .setLabel('+10')
-    .setStyle(ButtonStyle.Secondary);
-const descVolume = new ButtonBuilder()
-    .setCustomId('descVolume')
-    .setEmoji('🔉')
-    .setLabel('-10')
-    .setStyle(ButtonStyle.Secondary);
-
-const row1 = new ActionRowBuilder().addComponents(descVolume, prev, pauseOrResume, next, asdVolume);
-const row2 = new ActionRowBuilder().addComponents(stop);
-
 distube
     .on('addSong', (queue, song) => {
         queue.textChannel?.send(`✅ | Added track to queue: **${song.name}** - \`${song.formattedDuration}\``);
     })
-    .on('playSong', (queue, song) => {
-        queue.textChannel?.send({
+    .on('playSong', async (queue, song) => {
+        let repeatModeName;
+        switch (queue.repeatMode) {
+            case 1:
+                repeatModeName = 'Track';
+                break;
+            case 2:
+                repeatModeName = 'Queue';
+                break;
+            default:
+                repeatModeName = 'Off';
+                break;
+        }
+        const message = await queue.textChannel?.send({
             embeds: [
-                embed
-                    .setDescription(
-                        `Now Playing: **[${song.name}](${song.url})**\n\nDuration: \`${song.formattedDuration}\`\n\nRequested By: ${song.user}`,
+                new EmbedBuilder()
+                    .setAuthor({
+                        name: 'Music Player',
+                    })
+                    .setColor(randomHexColor())
+                    .setFooter({
+                        text: 'Music Player By Snow',
+                    })
+                    .setDescription(`Now Playing: **[${song.name}](${song.url})**`)
+                    .setThumbnail(song.thumbnail)
+                    .addFields(
+                        {
+                            name: 'Requested By',
+                            value: `${song.user}`,
+                            inline: true,
+                        },
+                        {
+                            name: 'Duration',
+                            value: `\`${song.formattedDuration}\``,
+                            inline: true,
+                        },
+                        {
+                            name: 'Volume',
+                            value: `**${queue.volume}%**`,
+                            inline: true,
+                        },
                     )
-                    .setThumbnail(song.thumbnail),
+                    .addFields({
+                        name: 'RepeatMode',
+                        value: `\`${repeatModeName}\``,
+                    })
+                    .setTimestamp(),
             ],
-            components: [row1, row2],
+            components: [musicBtn1, musicBtn2],
         });
+        distube
+            .on('finishSong', (queue, song) => {
+                message.edit({
+                    components: [],
+                });
+            })
+            .on('deleteQueue', (queue) => {
+                message.edit({
+                    components: [],
+                });
+            });
     })
-    .on('finishSong', (queue, song) => {})
+
     .on('addList', (queue, playlist) => {
         queue.textChannel?.send({
             embeds: [
@@ -58,5 +92,5 @@ distube
         });
     })
     .on('empty', (queue) => {
-        queue.textChannel?.send('❗ | All tracks have been played !');
+        queue.textChannel?.send('❗ | Leaving !');
     });

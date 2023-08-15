@@ -1,7 +1,11 @@
-const { Events, EmbedBuilder, Collection } = require('discord.js');
+const distube = require('../client/distube');
 const client = require('..');
+const { Events, EmbedBuilder, Collection } = require('discord.js');
+const wait = require('node:timers/promises').setTimeout;
+
 const { formatString } = require('../utils/formatString');
 const { randomHexColor } = require('../utils/randomHexColor');
+const { pauseOrResumeBtn, inAndDeVolume, loopTrackBtn, loopQueueBtn } = require('../utils/interactionButton');
 
 const { cooldowns } = client;
 
@@ -104,10 +108,133 @@ client.on(Events.InteractionCreate, async (interaction) => {
     // handler music player button
     else if (interaction.isButton()) {
         try {
+            const queue = distube.getQueue(interaction.guildId);
+            // stop music
             if (interaction.customId === 'stop') {
-                interaction.reply('u pressed stop button');
+                if (!queue)
+                    return interaction.reply({
+                        content: '❗ | Queue empty',
+                        ephemeral: true,
+                    });
+                queue.stop();
+                await interaction.reply('🛑 | Stopped');
+            }
+            // next 1 song
+            else if (interaction.customId === 'nextSong') {
+                if (!queue)
+                    return interaction.reply({
+                        content: '❗ | Queue empty',
+                        ephemeral: true,
+                    });
+                queue.skip();
+                await interaction.reply('⏭️ | Skipped');
+            }
+            // back one song
+            else if (interaction.customId === 'prevSong') {
+                if (!queue)
+                    return interaction.reply({
+                        content: '❗ | Queue empty',
+                        ephemeral: true,
+                    });
+                queue.previous();
+                await interaction.reply('⏮️ | Back 1 song');
+            }
+            // handle pause and play
+            else if (interaction.customId === 'pauseOrResumeSong') {
+                if (!queue)
+                    return interaction.reply({
+                        content: '❗ | Queue empty',
+                        ephemeral: true,
+                    });
+                queue.paused ? queue.resume() : queue.pause();
+                await interaction.reply({
+                    content: queue.paused ? '▶️ | Resume song' : '⏸️ | Paused',
+                    components: [pauseOrResumeBtn],
+                });
+                await wait(3000);
+                await interaction.editReply({
+                    components: [],
+                });
+            }
+            // increase volume
+            else if (interaction.customId === 'asdVolume') {
+                if (!queue)
+                    return interaction.reply({
+                        content: '❗ | Queue empty',
+                        ephemeral: true,
+                    });
+                let v = queue.volume;
+                if (0 > v || v > 100) {
+                    interaction.reply({
+                        content: '❗ | Volume can only be setted from **0** to **100%**',
+                        ephemeral: true,
+                    });
+                } else {
+                    v += 10;
+                    queue.setVolume(v);
+                    await interaction.reply({
+                        content: `🔊 | Volume **${v}%**`,
+                        components: [inAndDeVolume],
+                    });
+                    await wait(2000);
+                    await interaction.deleteReply();
+                }
+            }
+            // decrease volume
+            else if (interaction.customId === 'descVolume') {
+                if (!queue)
+                    return interaction.reply({
+                        content: '❗ | Queue empty',
+                        ephemeral: true,
+                    });
+                let vol = queue.volume;
+                if (0 > vol || vol > 100) {
+                    interaction.reply({
+                        content: '❗ | Volume can only be setted from **0** to **100%**',
+                        ephemeral: true,
+                    });
+                } else {
+                    vol -= 10;
+                    queue.setVolume(vol);
+                    await interaction.reply({
+                        content: `🔉 | Volume **${vol}%**`,
+                        components: [inAndDeVolume],
+                    });
+                    await wait(2000);
+                    await interaction.deleteReply();
+                }
+            }
+            // handle loop button
+            else if (interaction.customId === 'loopQueue') {
+                if (!queue)
+                    return interaction.reply({
+                        content: '❗ | Queue empty',
+                        ephemeral: true,
+                    });
+                queue.repeatMode === 0 || queue.repeatMode === 1 ? queue.setRepeatMode(2) : queue.setRepeatMode(0);
+                await interaction.reply({
+                    content: queue.repeatMode === 2 ? '🔁 | Queue Loop: **On**' : '🔁 | Queue Loop: **Off**',
+                    components: [loopQueueBtn],
+                });
+            }
+            //  loop track
+            else if (interaction.customId === 'loopTrack') {
+                if (!queue)
+                    return interaction.reply({
+                        content: '❗ | Queue empty',
+                        ephemeral: true,
+                    });
+                queue.repeatMode === 0 || queue.repeatMode === 2 ? queue.setRepeatMode(1) : queue.setRepeatMode(0);
+                await interaction.reply({
+                    content: queue.repeatMode === 1 ? '🔁 | Track Loop: **On**' : '🔁 | Track Loop: **Off**',
+                    components: [loopTrackBtn],
+                });
             }
         } catch (e) {
+            interaction.reply({
+                content: 'Got error with interaction button!',
+                ephemeral: true,
+            });
             console.log(e);
         }
     }
