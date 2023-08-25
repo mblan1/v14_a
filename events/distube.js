@@ -55,21 +55,28 @@ distube
                         },
                         {
                             name: 'Volume',
-                            value: `**${queue.volume}%**`,
+                            value: `\`${queue.volume}%\``,
                             inline: true,
                         },
                     )
-                    .addFields({
-                        name: 'RepeatMode',
-                        value: `\`${repeatModeName}\``,
-                    })
+                    .addFields(
+                        {
+                            name: 'RepeatMode',
+                            value: `\`${repeatModeName}\``,
+                        },
+                        {
+                            name: 'Auto Play',
+                            value: `${queue.autoplay ? '`On`' : '`Off`'}`,
+                            inline: true,
+                        },
+                    )
                     .setTimestamp(),
             ],
             components: [musicBtn1, musicBtn2],
         });
         distube
-            .on('finishSong', (queue, song) => {
-                message.edit({
+            .on('finishSong', async (queue, song) => {
+                await message.edit({
                     components: [],
                 });
             })
@@ -85,7 +92,7 @@ distube
             embeds: [
                 embed
                     .setDescription(
-                        `Added Playlist: **${playlist.name}**\n\nLength: \`${playlist.songs.length}\`\n\nDuration: \`${playlist.formattedDuration}\``,
+                        `🎶 | Added Playlist: **${playlist.name}**\n\nLength: \`${playlist.songs.length}\`\n\nDuration: \`${playlist.formattedDuration}\``,
                     )
                     .setThumbnail(playlist.thumbnail),
             ],

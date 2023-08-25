@@ -229,6 +229,16 @@ client.on(Events.InteractionCreate, async (interaction) => {
                     content: queue.repeatMode === 1 ? '🔁 | Track Loop: **On**' : '🔁 | Track Loop: **Off**',
                     components: [loopTrackBtn],
                 });
+            } else if (interaction.customId === 'autoPlay') {
+                if (!queue)
+                    return interaction.reply({
+                        content: '❗ | Queue empty',
+                        ephemeral: true,
+                    });
+
+                queue.toggleAutoplay();
+
+                await interaction.reply(`✅ | Autoplay: ${queue.autoplay ? '**On**' : '**Off**'}`);
             }
         } catch (e) {
             interaction.reply({

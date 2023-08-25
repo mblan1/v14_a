@@ -24,12 +24,13 @@ const descVolume = new ButtonBuilder()
     .setEmoji('🔉')
     .setLabel('-10')
     .setStyle(ButtonStyle.Success);
+const autoPlay = new ButtonBuilder().setCustomId('autoPlay').setLabel('Auto Play').setStyle(ButtonStyle.Success);
 
 const loopQueueBtn = new ActionRowBuilder().addComponents(loopQueue);
 const loopTrackBtn = new ActionRowBuilder().addComponents(loopTrack);
 const pauseOrResumeBtn = new ActionRowBuilder().addComponents(pauseOrResume);
 const inAndDeVolume = new ActionRowBuilder().addComponents(descVolume, asdVolume);
 const musicBtn1 = new ActionRowBuilder().addComponents(descVolume, prev, pauseOrResume, next, asdVolume);
-const musicBtn2 = new ActionRowBuilder().addComponents(loopTrack, loopQueue, stop);
+const musicBtn2 = new ActionRowBuilder().addComponents(loopTrack, loopQueue, stop, autoPlay);
 
 module.exports = { musicBtn1, musicBtn2, inAndDeVolume, pauseOrResumeBtn, loopTrackBtn, loopQueueBtn };
