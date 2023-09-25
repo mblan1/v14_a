@@ -27,7 +27,7 @@ const descVolume = new ButtonBuilder()
 const autoPlay = new ButtonBuilder().setCustomId('autoPlay').setLabel('Auto Play').setStyle(ButtonStyle.Success);
 
 const loopQueueBtn = new ActionRowBuilder().addComponents(loopQueue);
-const loopTrackBtn = new ActionRowBuilder().addComponents(loopTrack);
+const loopTrackBtn = new ActionRowBuilder().addComponents(loopTrack, stop);
 const pauseOrResumeBtn = new ActionRowBuilder().addComponents(pauseOrResume);
 const inAndDeVolume = new ActionRowBuilder().addComponents(descVolume, asdVolume);
 const musicBtn1 = new ActionRowBuilder().addComponents(descVolume, prev, pauseOrResume, next, asdVolume);
