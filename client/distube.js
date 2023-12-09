@@ -5,6 +5,8 @@ const { SoundCloudPlugin } = require('@distube/soundcloud');
 const { SpotifyPlugin } = require('@distube/spotify');
 const client = require('..');
 
+const { SPOTIFY_CLIENT_ID, SPOTIFY_SECRET_ID } = process.env;
+
 const distube = new DisTube(client, {
     leaveOnStop: false,
     emitNewSongOnly: true,
@@ -16,7 +18,13 @@ const distube = new DisTube(client, {
         }),
         new SoundCloudPlugin(),
         new SpotifyPlugin({
-            emitEventsAfterFetching: true,
+            emitEventsAfterFetching: false,
+            api: {
+                clientId: SPOTIFY_CLIENT_ID,
+                clientSecret: SPOTIFY_SECRET_ID,
+                topTracksCountry: 'VN',
+            },
+            parallel: true,
         }),
     ],
 });

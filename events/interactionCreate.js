@@ -6,6 +6,7 @@ const wait = require('node:timers/promises').setTimeout;
 const { formatString } = require('../utils/formatString');
 const { randomHexColor } = require('../utils/randomHexColor');
 const { pauseOrResumeBtn, inAndDeVolume, loopTrackBtn, loopQueueBtn } = require('../utils/interactionButton');
+const { checkSameInteractionRoom } = require('../utils/checkSameRoom');
 
 const { cooldowns } = client;
 
@@ -108,6 +109,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
     // handler music player button
     else if (interaction.isButton()) {
         try {
+            if (checkSameInteractionRoom(interaction)) return;
             const queue = distube.getQueue(interaction.guildId);
             // stop music
             if (interaction.customId === 'stop') {
@@ -116,8 +118,8 @@ client.on(Events.InteractionCreate, async (interaction) => {
                         content: '❗ | Queue empty',
                         ephemeral: true,
                     });
-                queue.stop();
-                await interaction.reply('🛑 | Stopped');
+                await queue.stop();
+                interaction.reply('🛑 | Stopped');
             }
             // next 1 song
             else if (interaction.customId === 'nextSong') {
@@ -229,7 +231,9 @@ client.on(Events.InteractionCreate, async (interaction) => {
                     content: queue.repeatMode === 1 ? '🔁 | Track Loop: **On**' : '🔁 | Track Loop: **Off**',
                     components: [loopTrackBtn],
                 });
-            } else if (interaction.customId === 'autoPlay') {
+            }
+            // auto play
+            else if (interaction.customId === 'autoPlay') {
                 if (!queue)
                     return interaction.reply({
                         content: '❗ | Queue empty',

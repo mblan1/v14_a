@@ -2,7 +2,6 @@ const { EmbedBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require('
 const distube = require('../client/distube');
 const { randomHexColor } = require('../utils/randomHexColor');
 const { musicBtn1, musicBtn2 } = require('../utils/interactionButton');
-const client = require('..');
 
 const embed = new EmbedBuilder()
     .setAuthor({
@@ -63,6 +62,7 @@ distube
                         {
                             name: 'RepeatMode',
                             value: `\`${repeatModeName}\``,
+                            inline: true,
                         },
                         {
                             name: 'Auto Play',
@@ -80,15 +80,15 @@ distube
                     components: [],
                 });
             })
-            .on('deleteQueue', (queue) => {
-                message.edit({
+            .on('deleteQueue', async (queue) => {
+                await message.edit({
                     components: [],
                 });
             });
     })
 
     .on('addList', (queue, playlist) => {
-        queue.textChannel?.send({
+        queue.textChannel.send({
             embeds: [
                 embed
                     .setDescription(
