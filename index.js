@@ -1,6 +1,6 @@
-// const http = require("http");
+const http = require('http');
 
-// http.createServer((_, res) => res.end(`Bot is ready!`)).listen(8080)
+http.createServer((_, res) => res.end(`Bot is ready!`)).listen(8080);
 
 const { Client, GatewayIntentBits, Partials, Collection } = require('discord.js');
 require('dotenv').config();
