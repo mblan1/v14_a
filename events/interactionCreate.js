@@ -11,7 +11,7 @@ const { checkSameInteractionRoom } = require('../utils/checkSameRoom');
 const { countdowns } = client;
 
 client.on(Events.InteractionCreate, async (interaction) => {
-    if (interaction.isChatInputCommand()) {
+    if (interaction.isCommand()) {
         // handle slash command
         const command = interaction.client.interactions.get(interaction.commandName);
         if (!command) {

@@ -14,8 +14,7 @@ module.exports = {
         const input = interaction.options.getString('song');
         if (checkSameInteractionRoom(interaction)) return;
 
-        await interaction.reply(`Searching for: ${input}`);
-        console.log(input);
+        await interaction.reply(`Searching for: **${input}**`);
 
         try {
             await distube.play(interaction.member.voice.channel, input, {
