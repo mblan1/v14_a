@@ -1,6 +1,6 @@
 const client = require('..');
 
-const { prefix } = process.env;
+const prefix = process.env.PREFIX;
 
 client.on('messageCreate', async (message) => {
     if (message.author.bot || !message.guild || !message.content.toLowerCase().startsWith(prefix)) return;

@@ -1,7 +1,7 @@
 const { ActivityType, Events } = require('discord.js');
 const client = require('..');
 
-const { prefix } = process.env;
+const prefix = process.env.PREFIX;
 client.once(Events.ClientReady, async () => {
     process.setMaxListeners(0);
     const guilds = client.guilds.cache;
