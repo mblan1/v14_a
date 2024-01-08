@@ -11,7 +11,7 @@ module.exports = {
         .addStringOption((option) =>
             option.setName('text').setDescription('Content').setRequired(true).setMaxLength(200),
         ),
-    cooldown: 5,
+    countdown: 5,
     category: 'bot',
 
     async execute(interaction) {

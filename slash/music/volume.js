@@ -10,7 +10,7 @@ module.exports = {
             option.setName('value').setDescription('Volume value').setMaxValue(100).setMinValue(0),
         ),
     category: 'music',
-    cooldown: 3,
+    countdown: 3,
 
     async execute(interaction) {
         if (checkSameInteractionRoom(interaction)) return;

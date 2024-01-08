@@ -8,7 +8,7 @@ const { randomHexColor } = require('../utils/randomHexColor');
 const { pauseOrResumeBtn, inAndDeVolume, loopTrackBtn, loopQueueBtn } = require('../utils/interactionButton');
 const { checkSameInteractionRoom } = require('../utils/checkSameRoom');
 
-const { cooldowns } = client;
+const { countdowns } = client;
 
 client.on(Events.InteractionCreate, async (interaction) => {
     if (interaction.isChatInputCommand()) {
@@ -20,14 +20,14 @@ client.on(Events.InteractionCreate, async (interaction) => {
         }
 
         // cool down
-        if (!cooldowns.has(command.data.name)) {
-            cooldowns.set(command.data.name, new Collection());
+        if (!countdowns.has(command.data.name)) {
+            countdowns.set(command.data.name, new Collection());
         }
 
         const now = Date.now();
-        const timeStamps = cooldowns.get(command.data.name);
+        const timeStamps = countdowns.get(command.data.name);
         const defaultTine = 3;
-        const cooldownAmount = (command.cooldown ?? defaultTine) * 1000;
+        const countdownAmount = (command.countdown ?? defaultTine) * 1000;
 
         if (timeStamps.has(command.data.name)) {
             const expirationTime = timeStamps.get(interaction.user.id) + cooldownAmount;
@@ -35,7 +35,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
             if (now < expirationTime) {
                 const expirationTimestamp = Math.round(expirationTime / 1000);
                 return interaction.reply({
-                    content: `Please wait, you are on a cooldown for \`${command.data.name}\`. You can use it again <t:${expiredTimestamp}:R>.`,
+                    content: `Please wait, you are on a cooldown for \`${command.data.name}\`. You can use it again <t:${expirationTimestamp}:R>.`,
                     ephemeral: true,
                 });
             }
@@ -43,7 +43,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
         timeStamps.set(interaction.user.id.now);
         setTimeout(() => {
             timeStamps.delete(interaction.user.id);
-        }, cooldownAmount);
+        }, countdownAmount);
 
         try {
             // execute command

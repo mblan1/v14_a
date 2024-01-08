@@ -4,7 +4,7 @@ const { SlashCommandBuilder } = require('discord.js');
 module.exports = {
     data: new SlashCommandBuilder().setName('disconnect').setDescription('Make bot leave current voice room'),
 
-    cooldown: 5,
+    countdown: 5,
     category: 'bot',
 
     async execute(interaction) {

@@ -8,7 +8,7 @@ module.exports = {
         .setDescription('Play Song')
         .addStringOption((option) => option.setName('song').setDescription('name or url').setRequired(true)),
     category: 'music',
-    cooldown: 3,
+    countdown: 3,
 
     async execute(interaction) {
         const input = interaction.options.getString('song');

@@ -15,7 +15,7 @@ module.exports = {
                 .addChoices(...getSlashCommands()),
         ),
     category: 'mod',
-    cooldown: 5,
+    countdown: 5,
 
     async execute(interaction) {
         const commandName = interaction.options.getString('command', true).toLowerCase();

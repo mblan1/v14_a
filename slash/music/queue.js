@@ -5,7 +5,7 @@ const { randomHexColor } = require('../../utils/randomHexColor');
 module.exports = {
     data: new SlashCommandBuilder().setName('queue').setDescription('Display queue'),
     category: 'music',
-    cooldown: 3,
+    countdown: 3,
 
     async execute(interaction) {
         const queue = distube.getQueue(interaction);

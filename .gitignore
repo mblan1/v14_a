@@ -25,5 +25,4 @@ yarn-error.log*
 config.json
 .prettierrc
 
-startbot.bat
-v14active.bat
+start.bat

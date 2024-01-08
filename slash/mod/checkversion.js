@@ -32,7 +32,7 @@ module.exports = {
             ),
         ),
 
-    cooldown: 5,
+    countdown: 5,
     category: 'mod',
 
     async execute(interaction) {

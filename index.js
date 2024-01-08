@@ -45,7 +45,7 @@ module.exports = client;
 // collection
 client.commands = new Collection();
 client.interactions = new Collection();
-client.cooldowns = new Collection();
+client.countdowns = new Collection();
 
 // handlers
 const handlers = fs.readdirSync('./handlers');

@@ -5,7 +5,7 @@ const { checkSameInteractionRoom } = require('../../utils/checkSameRoom');
 module.exports = {
     data: new SlashCommandBuilder().setName('stop').setDescription('Clear all queue and stop player'),
     category: 'music',
-    cooldown: 3,
+    countdown: 3,
 
     async execute(interaction) {
         if (checkSameInteractionRoom(interaction)) return;

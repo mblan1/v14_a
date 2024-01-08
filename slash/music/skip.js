@@ -7,7 +7,7 @@ module.exports = {
         .setName('skip')
         .setDescription('Skip to next song')
         .addNumberOption((option) => option.setName('position').setDescription('Song position you want jump to')),
-    cooldown: 3,
+    countdown: 3,
     category: 'music',
 
     async execute(interaction) {

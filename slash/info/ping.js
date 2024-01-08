@@ -3,7 +3,7 @@ const client = require('../..');
 
 module.exports = {
     data: new SlashCommandBuilder().setName('ping').setDescription('Ping Bot'),
-    cooldown: 3,
+    countdown: 3,
     category: 'info',
 
     async execute(interaction) {

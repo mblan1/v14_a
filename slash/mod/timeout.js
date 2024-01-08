@@ -13,7 +13,7 @@ module.exports = {
         .addStringOption((option) => option.setName('reason').setDescription('Reason').setRequired(true))
         .addBooleanOption((option) => option.setName('notify').setDescription('Notify Member with DM')),
     category: 'mod',
-    cooldown: 5,
+    countdown: 5,
     async execute(interaction) {
         const user = interaction.options.getMember('user');
         const CDTime = interaction.options.getNumber('time');
