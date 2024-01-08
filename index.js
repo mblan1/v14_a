@@ -7,8 +7,6 @@ require('dotenv').config();
 
 const fs = require('fs');
 
-const { token } = process.env;
-
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
@@ -53,4 +51,4 @@ client.cooldowns = new Collection();
 const handlers = fs.readdirSync('./handlers');
 handlers.map((handle) => require(`./handlers/${handle}`)(client));
 
-client.login(token);
+client.login(process.env.TOKEN);
